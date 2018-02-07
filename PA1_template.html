@@ -125,7 +125,7 @@ $(document).ready(function () {
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>It is now possible to collect a large amount of data about personal movement using activity monitoring devices such as a Fitbit, Nike Fuelband, or Jawbone Up. These type of devices are part of the “quantified self” movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. But these data remain under-utilized both because the raw data are hard to obtain and there is a lack of statistical methods and software for processing and interpreting the data.</p>
-<p>This project uses of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.</p>
+<p>This project uses the data collected by the personal activity monitoring device. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.</p>
 <p>The variables included in this dataset are:</p>
 <p><strong>steps</strong>: Number of steps taking in a 5-minute interval (missing values are coded as NA)</p>
 <p><strong>date</strong>: The date on which the measurement was taken in YYYY-MM-DD format</p>
@@ -134,7 +134,7 @@ $(document).ready(function () {
 </div>
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
-<p>The data set for the personal movement analysis is loaded, and processed into data frame for future analysis. Additionally the new column is created that stores date and time information into the date-time format.</p>
+<p>The dataset for the personal movement analysis is loaded, and processed into data frame for future analysis. Additionally the new column is created that stores date and time information in date-time format.</p>
 <pre class="r"><code>suppressWarnings(library(ggplot2))
 suppressWarnings(library(knitr))
 library(png)
@@ -160,7 +160,7 @@ data$datetime &lt;- strptime(paste(data$date,sprintf(&quot;%.4i&quot;,data$inter
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>
-<p>To calculate the mean total number of steps per day the new dataset is generated where the number of steps is summed for each day. The data is summarized and shows on the histogram plot. There are many days where there total number of steps taken is 0. In fact, there are no measurements done during these days.</p>
+<p>To calculate the mean total number of steps per day the new dataset is generated where the number of steps is summed for each day. The data is summarized on the histogram plot. There are many days where there total number of steps is zero. In fact, there are no measurements done during these days.</p>
 <pre class="r"><code>#number of steps per day
 byday &lt;- tapply(data$steps,data$date,sum,na.rm=TRUE)
 byday &lt;- data.frame(date = names(byday),
@@ -178,7 +178,7 @@ include_graphics(fig1)</code></pre>
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level2">
 <h2>What is the average daily activity pattern?</h2>
-<p>To calculate the average daily activity pattern the new data frame is created where data is averaged for each 5-minute interval across all days. The date is summarized on the graph.</p>
+<p>To calculate the average daily activity pattern the new data frame is created, where data is averaged for each 5-minute interval across all days. The data is summarized on the graph.</p>
 <pre class="r"><code># plot total number of steps for 5-minute intervals
 byint &lt;- tapply(data$steps,data$interval,mean,na.rm=TRUE)
 byint &lt;- data.frame(interval = names(byint),
@@ -199,7 +199,7 @@ include_graphics(fig2)</code></pre>
 </div>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
-<p>There are 2304 missing values in the daily activity data in the dataset. In order to avoid the bias introduced by them, these values have to be imputed. As a simple imputing strategy we will use the average number of steps for each interval to substitute the missing value.</p>
+<p>There are 2304 missing values in the daily activity data in the dataset. In order to avoid the bias introduced by them, these values have to be imputed. As a simple strategy we will use the average number of steps for each interval to substitute the missing values.</p>
 <p>The results are summarized on the histogram. The amount of days with nearly zero number of steps is significanty reduced.</p>
 <pre class="r"><code># intervals with missing values
 missing &lt;- is.na(data$steps)
@@ -224,11 +224,11 @@ ggplot(bydayfixed,aes(steps))+
 invisible(dev.off())
 include_graphics(fig3)</code></pre>
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAEgCAMAAAD14jtjAAAAvVBMVEUAAAAAAGYAOpAAZrYzMzM6AAA6ADo6AGY6OmY6OpA6kNtNTU1NTW5NTY5NbqtNjshZWVlmAABmADpmAGZmOgBmOpBmtv9uTU1uTY5ubqtuq6tuq+SOTU2OTY6ObquOjk2OjsiOq+SOyP+QOgCQOjqQ2/+rbk2r5P+2ZgC2///Ijk3Ijm7Ijo7IyP/I///bkDrb///kq27kq47k/8jk///r6+v/tmb/yI7/25D/5Kv//7b//8j//9v//+T///+RsZ90AAAJEUlEQVR4nO2df3vTNhhFM2BsEFbG2MpYNwbpoKWMQrqOJm3x9/9YyHLbNP5xVSdW/MY69488IzqNr60T2X4o8ygjSWfUdwHSbxAg8SBA4kGAxHMHAf7PU7zeSvkNgG0DECBxAAESBxAgcQABEgcQIHEAARIHECBxAAESBxAgcQABEgdSEODnUkyWRIB4AAIIAAGMlESAeAACCAABjJREgHgAAgjgzgJscSoCkHJYAXovaX4FsFW7FYAAAkAAIyURIB6AAAJAACMlESAegAACQAAjJREgHoAAAkAAIyURIB6AAAJAACMlESAegAACQAAjJREgHoAAAkAAIyURIB6AAAJAACMlESAegAACQAAjJREgHoAAAkAAIyURIB6AAAJAACMlESAegAACQAAjJREgHoAAAkAAIyURIB6AAAJAACMlLQownWRf342fHCDAgAEhwNF4kl28ZgUYNtAswMVHtwLMX4x3Tt0fHjwInyTMpiIAKafxFHC2l83f+D/Y8rYVwAoggIAALs4BBBguEBAgXwQmCDBgICCAuwt4miHAgAElwFJs1W4FIIAAEMBISQSIByCAABDASEkEiAcggAAQwEhJBIgHIIAAEMBISQSIByCAABDASEkEiAcggAAQwEhJBIgHIIAAEMBISQSIByCAABDASEkEiAcggAAQwEhJBIgHIIAAEMBISQSIByCAABDASEkEiAcggAAQwEhJBIgHIIAAEMBISfMCbHEqApByWAF6L2l+BbBVuxWAAAJAACMlESAegAACQAAjJREgHoAAAkAAIyURIB6AAAJAACMlESAegAACQAAjJREgHoAAAkAAIyURIB6AAAJAACMlESAegAACQAAjJREgHoAAAkAAIyURIB6AAAJA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" width="512" /></p>
-<p><em>The mean</em> number of steps taken each day is 10766.19 and <em>the median</em> is 10766.19. These values are higher than in the initial analysis. After the missing values were filled in the original dataset, there are less days with 0 steps.</p>
+<p><em>The mean</em> number of steps taken each day is 10766.19 and <em>the median</em> is 10766.19. These values are higher than in the initial analysis. After the missing values were filled-in in the original dataset, there are less days with zero steps.</p>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
-<p>It is interesting to see the difference in pattern between <em>weekdays</em> and <em>weekends</em>. The new factor column is added to the dataset that determines if the day is a weekend or weekday. The data is summarized for every 5-minute interval and presented on a graph.There is a clear difference in the data pattern between <em>weekdays</em> and <em>weekends</em>.</p>
+<p>It is interesting to see the difference in pattern between <em>weekdays</em> and <em>weekends</em>. The new factor column is added to the dataset that determines if the day is a <em>weekend</em> or a <em>weekday</em>. The data is summarized for every 5-minute interval on a graph. There is a clear difference in the patterns between <em>weekdays</em> and <em>weekends</em>. The main activity during <em>the weekend</em> starts around 8:00, while during <em>the weekday</em> the person is already active starting 6:00. The spike in the morning activity during <em>the weekday</em> at 8:35 is more pronounced than during <em>the weekend</em>. Although during <em>the weekend</em>, there is more activity in the afternoon than in <em>the weekday</em>.</p>
 <pre class="r"><code>weekends &lt;- weekdays(datafixed$datetime)==&quot;Saturday&quot; | weekdays(datafixed$datetime)==&quot;Sunday&quot;
 datafixed$weekdays[!weekends] &lt;- &quot;weekday&quot;
 datafixed$weekdays[weekends] &lt;- &quot;weekend&quot;
