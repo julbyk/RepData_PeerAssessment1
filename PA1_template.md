@@ -26,7 +26,8 @@ The report will explain the methods and outputs of the analysis of the personal 
 
 The data set for the personal movement analysis is loaded, and processed into data frame for future analysis. Additionally the new column is created that stores date and time information into the date-time format.
 
-```{r,echo=TRUE}
+
+```r
 suppressWarnings(library(ggplot2))
 suppressWarnings(library(knitr))
 library(png)
@@ -49,14 +50,14 @@ if(!dir.exists(figdir)){
 data <- read.csv(destFile)
 #add datetime column
 data$datetime <- strptime(paste(data$date,sprintf("%.4i",data$interval)),"%Y-%m-%d %H%M")
-
 ```
 
 ## What is mean total number of steps taken per day?
 
 To calculate the mean total number of steps per day the new dataset is generated where the number of steps is summed for each day. The data is summarized and shows on the histogram plot. There are many days where there total number of steps taken is 0. In fact, there are no measurements done during these days.
 
-```{r,echo=TRUE}
+
+```r
 #number of steps per day
 byday <- tapply(data$steps,data$date,sum,na.rm=TRUE)
 byday <- data.frame(date = names(byday),
@@ -69,16 +70,18 @@ ggplot(byday,aes(steps))+
     scale_x_continuous(breaks=seq(0,26000,2000))
 invisible(dev.off())
 include_graphics(fig1)
-
 ```
 
-_The mean_ number of steps per day is `r sprintf('%.2f',mean(byday$steps)) ` and _the median_ is `r sprintf('%.2f',median(byday$steps))`.
+<img src="Figures/fig1.png" width="512" />
+
+_The mean_ number of steps per day is 9354.23 and _the median_ is 10395.00.
 
 ## What is the average daily activity pattern?
 
 To calculate the average daily activity pattern the new data frame is created where data is averaged for each 5-minute interval across all days. The date is summarized on the graph.
 
-```{r,echo=TRUE}
+
+```r
 # plot total number of steps for 5-minute intervals
 byint <- tapply(data$steps,data$interval,mean,na.rm=TRUE)
 byint <- data.frame(interval = names(byint),
@@ -96,16 +99,18 @@ invisible(dev.off())
 include_graphics(fig2)
 ```
 
-The maximum number of steps is made during the time interval starting at `r byint$time[which.max(byint$steps)]`.
+<img src="Figures/fig2.png" width="768" />
+
+The maximum number of steps is made during the time interval starting at 08:35.
 
 ## Imputing missing values
 
-There are `r sprintf('%d',sum(is.na(data$steps)))` missing values in the daily activity data in the dataset. In order to avoid the bias introduced by them, these values have to be imputed. As a simple imputing strategy we will use the average number of steps for each interval to substitute the missing value.
+There are 2304 missing values in the daily activity data in the dataset. In order to avoid the bias introduced by them, these values have to be imputed. As a simple imputing strategy we will use the average number of steps for each interval to substitute the missing value.
 
 The results are summarized on the histogram. The amount of days with nearly zero number of steps is significanty reduced.
 
-```{r,echo=TRUE}
 
+```r
 # intervals with missing values
 missing <- is.na(data$steps)
 
@@ -130,13 +135,15 @@ invisible(dev.off())
 include_graphics(fig3)
 ```
 
-_The mean_ number of steps taken each day is `r sprintf('%.2f',mean(bydayfixed$steps))` and _the median_ is `r sprintf('%.2f',median(bydayfixed$steps))`. These values are higher than in the initial analysis. After the missing values were filled in the original dataset, there are less days with 0 steps.
+<img src="Figures/fig3.png" width="512" />
+
+_The mean_ number of steps taken each day is 10766.19 and _the median_ is 10766.19. These values are higher than in the initial analysis. After the missing values were filled in the original dataset, there are less days with 0 steps.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 It is interesting to see the difference in pattern between _weekdays_ and _weekends_. The new factor column is added to the dataset that determines if the day is a weekend or weekday. The data is summarized for every 5-minute interval and presented on a graph.There is a clear difference in the data pattern between _weekdays_ and _weekends_.
-```{r}
 
+```r
 weekends <- weekdays(datafixed$datetime)=="Saturday" | weekdays(datafixed$datetime)=="Sunday"
 datafixed$weekdays[!weekends] <- "weekday"
 datafixed$weekdays[weekends] <- "weekend"
@@ -154,6 +161,7 @@ ggplot(byintw,aes(x=time,y=steps,group=1))+
     scale_x_discrete(breaks=byintw$time[seq(1,288,12)])
 invisible(dev.off())
 include_graphics(fig4)
-
 ```
+
+<img src="Figures/fig4.png" width="768" />
 
