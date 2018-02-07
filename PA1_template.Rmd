@@ -134,7 +134,7 @@ _The mean_ number of steps taken each day is `r sprintf('%.2f',mean(bydayfixed$s
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-It is interesting to see the difference in pattern between _weekdays_ and _weekends_. The new factor column is added to the dataset that determines if the day is a weekend or weekday. The data is summarized for every 5-minute interval and presented on a graph.There is a clear difference in the data pattern between _weekdays_ and _weekends_.
+It is interesting to see the difference in pattern between _weekdays_ and _weekends_. The new factor column is added to the dataset that determines if the day is a weekend or weekday. The data is summarized for every 5-minute interval and presented on a graph. There is a clear difference in the data pattern between _weekdays_ and _weekends_. The main activity during the weekend starts around 8:00, while during the weekday the person is active starting 6:00. The spike in the activity during the weekday at 8:35 is not as pronounced as during the weekend. Although during the weekend, ther is more activity in the afternoon, than the regular day.
 ```{r}
 
 weekends <- weekdays(datafixed$datetime)=="Saturday" | weekdays(datafixed$datetime)=="Sunday"
